@@ -1,0 +1,104 @@
+# Canonical error codes for all jieun-* services. Source: api/API-GATEWAY.md §5.1
+# (public codes) and §5.1a (worker-only codes, never returned on public HTTP
+# responses — used inside job/event payloads instead).
+version: 1
+codes:
+  - code: VALIDATION_FAILED
+    http: 422
+    retryable: false
+    description: Masukan tidak valid; details.fields memuat pesan per field.
+  - code: UNAUTHENTICATED
+    http: 401
+    retryable: false
+    description: Token hilang, tidak valid, atau kedaluwarsa.
+  - code: EMAIL_NOT_VERIFIED
+    http: 403
+    retryable: false
+    description: Akun belum memverifikasi email.
+  - code: MFA_REQUIRED
+    http: 401
+    retryable: false
+    description: Perlu kode MFA; details.challenge_id disertakan.
+  - code: FORBIDDEN
+    http: 403
+    retryable: false
+    description: Peran tidak mengizinkan.
+  - code: NOT_FOUND
+    http: 404
+    retryable: false
+    description: Tidak ada, atau milik pengguna lain.
+  - code: CONFLICT
+    http: 409
+    retryable: false
+    description: Bentrok keadaan (mis. email sudah terdaftar).
+  - code: QUOTA_EXCEEDED
+    http: 402
+    retryable: false
+    description: Kuota paket habis.
+  - code: PLATFORM_QUOTA_EXCEEDED
+    http: 429
+    retryable: true
+    description: Kuota API platform habis; job dijadwalkan ulang.
+  - code: TOKEN_EXPIRED
+    http: 409
+    retryable: false
+    description: Token akun sosial perlu dihubungkan ulang.
+  - code: RATE_LIMITED
+    http: 429
+    retryable: true
+    description: Terlalu banyak permintaan; lihat header Retry-After.
+  - code: ENGINE_UNAVAILABLE
+    http: 503
+    retryable: true
+    description: Seluruh rantai fallback gagal.
+  - code: PAYLOAD_TOO_LARGE
+    http: 413
+    retryable: false
+    description: Berkas melebihi batas paket.
+  - code: INTERNAL
+    http: 500
+    retryable: true
+    description: Kesalahan tak terduga.
+
+# Worker-only codes — muncul di data.error pada job log / event, tidak pernah
+# sebagai respons HTTP publik langsung.
+worker_codes:
+  - code: SOURCE_UNAVAILABLE
+    retryable: false
+    services: [analyzer, clipper]
+  - code: SOURCE_TOO_LONG
+    retryable: false
+    services: [analyzer]
+  - code: SOURCE_NO_AUDIO
+    retryable: false
+    services: [analyzer]
+  - code: SOURCE_FETCH_FAILED
+    retryable: true
+    services: [analyzer]
+  - code: SOURCE_CORRUPT
+    retryable: false
+    services: [clipper]
+  - code: BUDGET_EXCEEDED
+    retryable: false
+    services: [analyzer]
+  - code: CUT_OUT_OF_RANGE
+    retryable: false
+    services: [clipper]
+  - code: UNSUPPORTED_RATIO
+    retryable: false
+    services: [clipper]
+  - code: SUBTITLE_SOURCE_UNAVAILABLE
+    retryable: true
+    services: [clipper]
+  - code: ENCODE_FAILED
+    retryable: true
+    services: [clipper]
+  - code: RENDER_TIMEOUT
+    retryable: true
+    services: [clipper]
+  - code: STORAGE_WRITE_FAILED
+    retryable: true
+    services: [clipper]
+  - code: TARGET_DELETED
+    retryable: false
+    services: [clipper]

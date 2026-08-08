@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/jobs/render-clip.v1.json",
+  "title": "RenderClipTask",
+  "description": "Payload of the render:clip asynq task. See api/API-CLIPPER.md §2.",
+  "type": "object",
+  "required": ["job_id", "trace_id", "user_id", "actor_type", "idempotency_key", "payload"],
+  "properties": {
+    "job_id": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "actor_type": { "type": "string", "enum": ["user", "admin", "system"] },
+    "idempotency_key": { "type": "string" },
+    "payload": {
+      "type": "object",
+      "required": ["target_video_id", "source_video_id", "candidate_id", "source_key", "output_key", "thumbnail_key", "cut", "profile"],
+      "properties": {
+        "target_video_id": { "type": "string" },
+        "source_video_id": { "type": "string" },
+        "candidate_id": { "type": "string" },
+        "source_key": { "type": "string" },
+        "output_key": { "type": "string" },
+        "thumbnail_key": { "type": "string" },
+        "cut": {
+          "type": "object",
+          "required": ["start_ms", "end_ms"],
+          "properties": {
+            "start_ms": { "type": "integer", "minimum": 0 },
+            "end_ms": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "profile": {
+          "type": "object",
+          "required": ["ratio", "resolution", "fit", "subtitle", "watermark", "audio", "encode"],
+          "properties": {
+            "ratio": { "type": "string", "enum": ["9:16", "4:5", "1:1", "4:3", "16:9", "21:9"] },
+            "resolution": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+            "fit": { "type": "string", "enum": ["center_crop"] },
+            "subtitle": {
+              "type": "object",
+              "required": ["enabled"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "style": { "type": "string", "enum": ["karaoke", "minimal"] },
+                "source_lang": { "type": "string" },
+                "target_lang": { "type": "string" },
+                "dual_line": { "type": "boolean" },
+                "words_ref": { "type": "string" },
+                "font": { "type": "string" },
+                "size_ratio": { "type": "number" },
+                "position_ratio": { "type": "number" },
+                "highlight_color": { "type": "string" }
+              }
+            },
+            "watermark": {
+              "type": "object",
+              "required": ["enabled"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "text": { "type": "string" },
+                "position": { "type": "string", "enum": ["top_left", "top_right", "bottom_left", "bottom_right"] },
+                "opacity": { "type": "number" },
+                "size_ratio": { "type": "number" }
+              }
+            },
+            "audio": {
+              "type": "object",
+              "properties": {
+                "loudnorm_lufs": { "type": "number" },
+                "true_peak_db": { "type": "number" }
+              }
+            },
+            "encode": {
+              "type": "object",
+              "properties": {
+                "codec": { "type": "string" },
+                "crf": { "type": "integer" },
+                "preset": { "type": "string" },
+                "audio_codec": { "type": "string" },
+                "audio_bitrate_kbps": { "type": "integer" },
+                "faststart": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

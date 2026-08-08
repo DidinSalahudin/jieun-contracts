@@ -1,0 +1,7 @@
+# Redocly lint config. Only cosmetic rules that don't fit this project are
+# disabled — structural/correctness rules stay on their default (error).
+rules:
+  info-license: off          # no public license page yet, not applicable pre-launch
+  no-server-example.com: off # localhost is a legitimate documented server, see API-GATEWAY.md §2
+  operation-4xx-response: off # pure liveness/readiness checks have no 4xx case by design
+  no-unused-components: off  # Page/ErrorResponse are intentionally pre-declared for endpoints added in later phases (PLAN.md §6)

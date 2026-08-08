@@ -1,0 +1,5 @@
+#!/bin/sh
+# Installed via `make setup` (git config core.hooksPath githooks).
+# Rejects the commit if lint fails.
+set -e
+make lint

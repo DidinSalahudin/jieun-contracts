@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/jobs/analyze-start.v1.json",
+  "title": "AnalyzeStartTask",
+  "description": "Payload of the analyze:start asynq task. See INTEGRATION.md §7.1.",
+  "type": "object",
+  "required": ["job_id", "trace_id", "user_id", "actor_type", "idempotency_key", "enqueued_at", "payload"],
+  "properties": {
+    "job_id": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "actor_type": { "type": "string", "enum": ["user", "admin", "system"] },
+    "idempotency_key": { "type": "string" },
+    "enqueued_at": { "type": "string", "format": "date-time" },
+    "payload": {
+      "type": "object",
+      "required": ["video_id", "source", "constraints", "prompt_version", "engine_policy"],
+      "properties": {
+        "video_id": { "type": "string" },
+        "source": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": { "type": "string", "enum": ["youtube_url", "upload"] },
+            "url": { "type": ["string", "null"] },
+            "object_key": { "type": ["string", "null"] }
+          }
+        },
+        "constraints": {
+          "type": "object",
+          "required": ["max_candidates", "min_len_s", "max_len_s"],
+          "properties": {
+            "max_candidates": { "type": "integer", "minimum": 1 },
+            "min_len_s": { "type": "integer", "minimum": 0 },
+            "max_len_s": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "language_hint": { "type": "string" },
+        "prompt_version": { "type": "string" },
+        "engine_policy": {
+          "type": "object",
+          "required": ["transcribe", "llm"],
+          "properties": {
+            "transcribe": { "type": "array", "items": { "type": "string" } },
+            "llm": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "budget": {
+          "type": "object",
+          "properties": {
+            "max_idr": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/events/envelope.v1.json",
+  "title": "EventEnvelope",
+  "description": "Common envelope every jieun.* event uses. See INTEGRATION.md §6.4.",
+  "type": "object",
+  "required": ["event", "version", "event_id", "occurred_at", "trace_id", "user_id", "data"],
+  "properties": {
+    "event": { "type": "string", "description": "e.g. jieun.analysis.completed" },
+    "version": { "type": "integer", "minimum": 1 },
+    "event_id": { "type": "string" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "trace_id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "job_id": { "type": "string" },
+    "data": { "type": "object" }
+  },
+  "additionalProperties": false
+}

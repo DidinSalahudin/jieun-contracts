@@ -1,0 +1,11 @@
+# build
+bin/
+*.exe
+node_modules/
+
+# env
+.env
+.env.local
+
+# os
+.DS_Store

@@ -1,0 +1,31 @@
+version: "2"
+
+# Shared golangci-lint config for all jieun-* Go repos (jieun-platform,
+# jieun-analyzer, jieun-clipper). Referenced by relative path from each
+# repo's Makefile. See ARCHITECTURE.md §2.4 and OPERATIONS.md §4.
+
+linters:
+  default: standard
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - bodyclose
+    - noctx
+    - sqlclosecheck
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - std-error-handling
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

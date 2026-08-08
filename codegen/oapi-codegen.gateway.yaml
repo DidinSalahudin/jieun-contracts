@@ -1,0 +1,10 @@
+# NOTE: `output` is resolved relative to the current working directory at
+# invocation time, not relative to this file — generate.sh `cd`s to repo
+# root before calling oapi-codegen, so this path is repo-root-relative.
+package: gatewayapi
+generate:
+  models: true
+  client: true
+output-options:
+  skip-prune: true   # keep Error/Page even though no path references them yet — see plan Task 4 non-goals
+output: go/gatewayapi/gateway.gen.go

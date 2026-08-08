@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/events/render-completed.v1.json",
+  "title": "RenderCompletedEvent",
+  "description": "data payload of jieun.render.completed. See api/API-CLIPPER.md §5.",
+  "type": "object",
+  "required": ["target_video_id", "output_key", "thumbnail_key", "size_bytes", "duration_ms", "resolution", "ratio", "ffmpeg_version", "render_ms", "degraded"],
+  "properties": {
+    "target_video_id": { "type": "string" },
+    "output_key": { "type": "string" },
+    "thumbnail_key": { "type": "string" },
+    "size_bytes": { "type": "integer", "minimum": 0 },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "resolution": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "ratio": { "type": "string" },
+    "ffmpeg_version": { "type": "string" },
+    "render_ms": { "type": "integer", "minimum": 0 },
+    "degraded": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

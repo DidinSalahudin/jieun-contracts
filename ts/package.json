@@ -1,0 +1,8 @@
+{
+  "name": "@didinsalahudin/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "types": "src/index.ts",
+  "description": "Generated TypeScript types from jieun-contracts. Not hand-edited — regenerate with ../codegen/generate.sh."
+}

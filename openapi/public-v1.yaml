@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: Jieun Studio Public API
+  version: "1.0.0"
+  description: >
+    Public API surface exposed by jieun-platform's api-gateway. This document
+    covers the Fase 0 surface (health checks + shared schemas). Endpoints are
+    added phase-by-phase per PLAN.md §6 — see api/*.md for the full spec each
+    phase codifies here.
+servers:
+  - url: https://api.jieun.studio/v1
+    description: Produksi
+  - url: https://api.staging.jieun.studio/v1
+    description: Staging
+  - url: http://localhost:8080/v1
+    description: Lokal
+security:
+  - bearerAuth: []
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Liveness dengan info versi
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, version]
+                properties:
+                  status: { type: string, enum: [ok] }
+                  version: { type: string }
+  /healthz:
+    get:
+      operationId: getHealthz
+      summary: Liveness probe, tanpa autentikasi
+      security: []
+      responses:
+        "200":
+          description: OK
+  /readyz:
+    get:
+      operationId: getReadyz
+      summary: Readiness probe (DB, Redis, MinIO)
+      security: []
+      responses:
+        "200":
+          description: Siap menerima lalu lintas
+        "503":
+          description: Salah satu dependensi tidak sehat
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, retryable, trace_id]
+          properties:
+            code:
+              type: string
+              enum:
+                - VALIDATION_FAILED
+                - UNAUTHENTICATED
+                - EMAIL_NOT_VERIFIED
+                - MFA_REQUIRED
+                - FORBIDDEN
+                - NOT_FOUND
+                - CONFLICT
+                - QUOTA_EXCEEDED
+                - PLATFORM_QUOTA_EXCEEDED
+                - TOKEN_EXPIRED
+                - RATE_LIMITED
+                - ENGINE_UNAVAILABLE
+                - PAYLOAD_TOO_LARGE
+                - INTERNAL
+            message: { type: string }
+            details: { type: object }
+            retryable: { type: boolean }
+            trace_id: { type: string }
+    Page:
+      type: object
+      required: [has_more, limit]
+      properties:
+        next_cursor: { type: string }
+        has_more: { type: boolean }
+        limit: { type: integer }
+  responses:
+    ErrorResponse:
+      description: Error seragam — lihat komponen Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

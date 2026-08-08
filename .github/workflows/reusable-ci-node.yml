@@ -1,0 +1,44 @@
+name: Reusable CI (Node)
+
+on:
+  workflow_call: {}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          path: repo
+
+      - name: Checkout jieun-contracts
+        uses: actions/checkout@v4
+        with:
+          repository: DidinSalahudin/jieun-contracts
+          path: jieun-contracts
+
+      - name: Load centralized tool versions
+        run: cat jieun-contracts/versions.env >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: repo/package-lock.json
+
+      - name: Install dependencies
+        working-directory: repo
+        run: npm ci
+
+      - name: make lint
+        working-directory: repo
+        run: make lint
+
+      - name: make test
+        working-directory: repo
+        run: make test
+
+      - name: make build
+        working-directory: repo
+        run: make build
