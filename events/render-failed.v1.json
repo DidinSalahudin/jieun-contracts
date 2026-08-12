@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/events/render-failed.v1.json",
+  "title": "RenderFailedEvent",
+  "description": "data payload of jieun.render.failed. See api/API-CLIPPER.md §5.",
+  "type": "object",
+  "required": ["target_video_id", "error"],
+  "properties": {
+    "target_video_id": { "type": "string" },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string" },
+        "retryable": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "ffmpeg_stderr_tail": { "type": "string" }
+  },
+  "additionalProperties": false
+}

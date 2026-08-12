@@ -10,7 +10,7 @@ set -eu
 cd "$(dirname "$0")/.."
 
 mkdir -p go/jobs/analyzestart go/jobs/renderclip go/jobs/publishvideo
-mkdir -p go/events/envelope go/events/analysiscompleted go/events/rendercompleted
+mkdir -p go/events/envelope go/events/analysiscompleted go/events/rendercompleted go/events/renderprogress go/events/renderfailed
 mkdir -p ts/src/jobs ts/src/events
 
 gen_pair() {
@@ -28,6 +28,8 @@ gen_pair jobs/publish-video.v1.json PublishVideoTask go/jobs/publishvideo/publis
 gen_pair events/envelope.v1.json EventEnvelope go/events/envelope/envelope.gen.go ts/src/events/envelope.gen.ts envelope
 gen_pair events/analysis-completed.v1.json AnalysisCompletedEvent go/events/analysiscompleted/analysis_completed.gen.go ts/src/events/analysis-completed.gen.ts analysiscompleted
 gen_pair events/render-completed.v1.json RenderCompletedEvent go/events/rendercompleted/render_completed.gen.go ts/src/events/render-completed.gen.ts rendercompleted
+gen_pair events/render-progress.v1.json RenderProgressEvent go/events/renderprogress/render_progress.gen.go ts/src/events/render-progress.gen.ts renderprogress
+gen_pair events/render-failed.v1.json RenderFailedEvent go/events/renderfailed/render_failed.gen.go ts/src/events/render-failed.gen.ts renderfailed
 
 mkdir -p go/gatewayapi
 oapi-codegen -config codegen/oapi-codegen.gateway.yaml openapi/public-v1.yaml

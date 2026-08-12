@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/events/render-progress.v1.json",
+  "title": "RenderProgressEvent",
+  "description": "data payload of jieun.render.progress. See api/API-CLIPPER.md §5.",
+  "type": "object",
+  "required": ["target_video_id", "percent", "step", "step_label"],
+  "properties": {
+    "target_video_id": { "type": "string" },
+    "percent": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "step": { "type": "string" },
+    "step_label": { "type": "string" }
+  },
+  "additionalProperties": false
+}
