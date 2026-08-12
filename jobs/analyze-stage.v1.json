@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/jobs/analyze-stage.v1.json",
+  "title": "AnalyzeStageTask",
+  "description": "Payload of the analyze:stage asynq task — the self-chained follow-up to analyze:start covering every stage after extract. See INTEGRATION.md §6.3, §7.2.",
+  "type": "object",
+  "required": ["run_id", "stage", "user_id", "video_id", "trace_id", "idempotency_key", "engine_policy", "constraints"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "stage": { "type": "string", "enum": ["transcribe", "signals", "candidates", "judge", "dispatch"] },
+    "user_id": { "type": "string" },
+    "video_id": { "type": "string" },
+    "trace_id": { "type": "string" },
+    "idempotency_key": { "type": "string" },
+    "engine_policy": {
+      "type": "object",
+      "required": ["transcribe", "llm"],
+      "properties": {
+        "transcribe": { "type": "array", "items": { "type": "string" } },
+        "llm": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "max_idr": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["max_candidates", "min_len_s", "max_len_s"],
+      "properties": {
+        "max_candidates": { "type": "integer", "minimum": 1 },
+        "min_len_s": { "type": "integer", "minimum": 0 },
+        "max_len_s": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "additionalProperties": false
+}
