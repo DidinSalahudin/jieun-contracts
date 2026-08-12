@@ -5,6 +5,7 @@ import "testing"
 func TestQueueForTask_HasAllThreeRegisteredTypes(t *testing.T) {
 	want := map[TaskType]string{
 		TaskAnalyzeStart: QueueAnalyze,
+		TaskAnalyzeStage: QueueAnalyze,
 		TaskRenderClip:   QueueRender,
 		TaskPublishVideo: QueuePublish,
 	}
@@ -50,5 +51,8 @@ func TestTaskTypeConstants_MatchCatalogNames(t *testing.T) {
 	}
 	if TaskPublishVideo != "publish:video" {
 		t.Errorf("TaskPublishVideo = %q, want \"publish:video\"", TaskPublishVideo)
+	}
+	if TaskAnalyzeStage != "analyze:stage" {
+		t.Errorf("TaskAnalyzeStage = %q, want \"analyze:stage\"", TaskAnalyzeStage)
 	}
 }

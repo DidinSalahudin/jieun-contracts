@@ -6,6 +6,7 @@ type TaskType string
 
 const (
 	TaskAnalyzeStart TaskType = "analyze:start"
+	TaskAnalyzeStage TaskType = "analyze:stage"
 	TaskRenderClip   TaskType = "render:clip"
 	TaskPublishVideo TaskType = "publish:video"
 )
@@ -35,6 +36,7 @@ var QueuePriorities = map[string]int{
 // Global Constraints for the full catalog and why).
 var QueueForTask = map[TaskType]string{
 	TaskAnalyzeStart: QueueAnalyze,
+	TaskAnalyzeStage: QueueAnalyze,
 	TaskRenderClip:   QueueRender,
 	TaskPublishVideo: QueuePublish,
 }
