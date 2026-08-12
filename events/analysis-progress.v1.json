@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://contracts.jieun.studio/events/analysis-progress.v1.json",
+  "title": "AnalysisProgressEvent",
+  "description": "data payload of jieun.analysis.progress. See INTEGRATION.md §7.2.",
+  "type": "object",
+  "required": ["run_id", "stage", "stage_index", "stage_total", "status"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "stage": { "type": "string", "enum": ["extract", "transcribe", "signals", "candidates", "judge", "dispatch"] },
+    "stage_index": { "type": "integer", "minimum": 1, "maximum": 6 },
+    "stage_total": { "type": "integer", "const": 6 },
+    "status": { "type": "string", "enum": ["done"] }
+  },
+  "additionalProperties": false
+}
