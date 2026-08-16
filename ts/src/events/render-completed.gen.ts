@@ -11,16 +11,17 @@
  * data payload of jieun.render.completed. See api/API-CLIPPER.md §5.
  */
 export interface RenderCompletedEvent {
-    degraded:        boolean;
-    duration_ms:     number;
-    ffmpeg_version:  string;
-    output_key:      string;
-    ratio:           string;
-    render_ms:       number;
-    resolution:      [number, number, ...number[]];
-    size_bytes:      number;
-    target_video_id: string;
-    thumbnail_key:   string;
+    degraded:         boolean;
+    degraded_reason?: string;
+    duration_ms:      number;
+    ffmpeg_version:   string;
+    output_key:       string;
+    ratio:            string;
+    render_ms:        number;
+    resolution:       [number, number, ...number[]];
+    size_bytes:       number;
+    target_video_id:  string;
+    thumbnail_key:    string;
 }
 
 // Converts JSON strings to/from your types
@@ -190,6 +191,7 @@ function r(name: string) {
 const typeMap: any = {
     "RenderCompletedEvent": o([
         { json: "degraded", js: "degraded", typ: true },
+        { json: "degraded_reason", js: "degraded_reason", typ: u(undefined, "") },
         { json: "duration_ms", js: "duration_ms", typ: 0 },
         { json: "ffmpeg_version", js: "ffmpeg_version", typ: "" },
         { json: "output_key", js: "output_key", typ: "" },
