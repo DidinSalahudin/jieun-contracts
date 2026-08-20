@@ -14,6 +14,16 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      PLATFORM_READ_TOKEN:
+        description: >
+          Fine-grained PAT (Contents: Read-only) scoped to jieun-platform —
+          needed to checkout it cross-repo for the base-schema migration
+          step below, since jieun-platform is private and the default
+          GITHUB_TOKEN can't see other private repos. Not required when
+          the repo under test already IS jieun-platform (its own default
+          token can check itself out).
+        required: false
 
 jobs:
   lint-test-build:
@@ -82,6 +92,7 @@ jobs:
         with:
           repository: DidinSalahudin/jieun-platform
           path: jieun-platform-base
+          token: ${{ secrets.PLATFORM_READ_TOKEN || github.token }}
 
       - name: Load centralized tool versions
         # $GITHUB_ENV's file-append format only accepts KEY=VALUE lines —
