@@ -39,8 +39,15 @@ jobs:
           --health-retries 5
       redis:
         image: redis:7
+        # Host port 16379, not the container's own 6379 — every repo's
+        # test helpers hardcode localhost:16379 with no env-var fallback
+        # (matching local dev's shifted-port convention, jieun-deploy's
+        # docker-compose.yml), so CI's Redis has to answer on that same
+        # host port rather than the plain default. Real failure hit live:
+        # "dial tcp [::1]:16379: connect: connection refused" once
+        # Postgres-side fixes got far enough for Redis-backed tests to run.
         ports:
-          - 6379:6379
+          - 16379:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -48,7 +55,7 @@ jobs:
           --health-retries 5
     env:
       DATABASE_URL: postgres://jieun:jieun@localhost:5432/jieun_test?sslmode=disable
-      REDIS_URL: redis://localhost:6379
+      REDIS_ADDR: localhost:16379
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
