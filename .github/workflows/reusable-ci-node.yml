@@ -19,7 +19,10 @@ jobs:
           path: jieun-contracts
 
       - name: Load centralized tool versions
-        run: cat jieun-contracts/versions.env >> "$GITHUB_ENV"
+        # $GITHUB_ENV's file-append format only accepts KEY=VALUE lines —
+        # versions.env's own explanatory # comments break it if cat'd raw
+        # (real failure hit live: "Invalid format '# Single source...'").
+        run: grep -v '^#' jieun-contracts/versions.env | grep -v '^$' >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:
