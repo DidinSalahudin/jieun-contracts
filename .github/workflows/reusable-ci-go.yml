@@ -136,11 +136,13 @@ jobs:
         # "error: Failed to spawn: `ruff` — No such file or directory".
         if: hashFiles('repo/python/pyproject.toml') != ''
         working-directory: repo/python
-        # No --system: installs into uv's own project-scoped .venv (auto-
-        # created here since pyproject.toml is present), the same venv
-        # `uv run ruff` below resolves against — a --system install would
-        # land in the runner's system Python instead, invisible to `uv run`.
-        run: uv pip install -r requirements-dev.txt
+        # `uv pip install` (unlike `uv run`/`uv sync`) doesn't auto-create
+        # a venv — real failure hit live: "No virtual environment found;
+        # run `uv venv`...". No --system: installs into this explicit
+        # .venv, the same one `uv run ruff` below resolves against.
+        run: |
+          uv venv
+          uv pip install -r requirements-dev.txt
 
       - name: make lint
         working-directory: repo
