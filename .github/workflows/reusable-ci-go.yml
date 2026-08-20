@@ -61,6 +61,21 @@ jobs:
           repository: DidinSalahudin/jieun-contracts
           path: jieun-contracts
 
+      - name: Checkout jieun-platform (base schema)
+        # jieun-analyzer/jieun-clipper's own migrations reference core
+        # tables (users, videos, plans) they never create themselves —
+        # those live in jieun-platform's migrations, since every service
+        # shares one physical Postgres in both local dev and here. A
+        # repo's own isolated CI Postgres starts completely empty, so the
+        # base schema has to be laid down first. Harmless no-op re-checkout
+        # when the repo under test already IS jieun-platform — golang-migrate
+        # tracks applied versions, so running its own migrate-up twice from
+        # two checkouts of the same ref just sees "no change" the 2nd time.
+        uses: actions/checkout@v4
+        with:
+          repository: DidinSalahudin/jieun-platform
+          path: jieun-platform-base
+
       - name: Load centralized tool versions
         # $GITHUB_ENV's file-append format only accepts KEY=VALUE lines —
         # versions.env's own explanatory # comments break it if cat'd raw
@@ -81,6 +96,16 @@ jobs:
       - name: make lint
         working-directory: repo
         run: make lint
+
+      - name: Run jieun-platform base schema migrations + seed
+        # `psql` ships preinstalled on GitHub-hosted ubuntu-latest runners.
+        # seed.sql is idempotent (ON CONFLICT DO NOTHING) — the 'free' plan
+        # row it inserts is required by users.plan_id's FK constraint,
+        # which every repo's test fixtures rely on when creating test users.
+        working-directory: jieun-platform-base
+        run: |
+          migrate -path migrations -database "$DATABASE_URL" up
+          psql "$DATABASE_URL" -f migrations/seed.sql
 
       - name: Run database migrations
         # Only repos with their own migrations/ directory + make
