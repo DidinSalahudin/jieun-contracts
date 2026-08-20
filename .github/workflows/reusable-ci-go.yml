@@ -128,6 +128,20 @@ jobs:
         if: hashFiles('repo/python/pyproject.toml') != ''
         uses: astral-sh/setup-uv@v3
 
+      - name: Install Python dependencies (Python sidecar repos only)
+        # pyproject.toml declares no [project.dependencies] — this
+        # project's Python deps live in requirements.txt/requirements-dev.txt
+        # (pip-style, predates uv adoption here), so `uv run` alone never
+        # installs anything into its managed venv. Real failure hit live:
+        # "error: Failed to spawn: `ruff` — No such file or directory".
+        if: hashFiles('repo/python/pyproject.toml') != ''
+        working-directory: repo/python
+        # No --system: installs into uv's own project-scoped .venv (auto-
+        # created here since pyproject.toml is present), the same venv
+        # `uv run ruff` below resolves against — a --system install would
+        # land in the runner's system Python instead, invisible to `uv run`.
+        run: uv pip install -r requirements-dev.txt
+
       - name: make lint
         working-directory: repo
         run: make lint
