@@ -75,9 +75,26 @@ jobs:
       - name: Install golangci-lint
         run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
 
+      - name: Install migrate CLI
+        run: go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
       - name: make lint
         working-directory: repo
         run: make lint
+
+      - name: Run database migrations
+        # Only repos with their own migrations/ directory + make
+        # migrate-up target need this (jieun-platform/analyzer/clipper do;
+        # a repo without a DB, e.g. a future pure-frontend one, wouldn't).
+        # Each repo's own Makefile target already appends its own
+        # x-migrations-table suffix — real bug hit live: CI's Postgres
+        # container starts empty every run, and without this step every
+        # DB-backed test failed with "relation ... does not exist".
+        working-directory: repo
+        run: |
+          if [ -d migrations ]; then
+            make migrate-up
+          fi
 
       - name: make test
         working-directory: repo
