@@ -111,6 +111,14 @@ jobs:
       - name: Install migrate CLI
         run: go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+      - name: Install uv (Python sidecar repos only)
+        # jieun-analyzer's `make lint` also runs `cd python && uv run ruff
+        # check .` (T-042's Python transcription sidecar) — repos without a
+        # python/ dir (jieun-platform, jieun-clipper) skip this entirely.
+        # Real failure hit live: "/bin/sh: 1: uv: not found".
+        if: hashFiles('repo/python/pyproject.toml') != ''
+        uses: astral-sh/setup-uv@v3
+
       - name: make lint
         working-directory: repo
         run: make lint
