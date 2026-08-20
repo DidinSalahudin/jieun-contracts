@@ -111,6 +111,15 @@ jobs:
       - name: Install migrate CLI
         run: go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+      - name: Install ffmpeg (repos with an ffmpeg wrapper only)
+        # jieun-clipper's runner tests deliberately exercise a REAL ffmpeg
+        # binary (no mock, matching this codebase's own no-mocks-for-
+        # own-infra convention) — ubuntu-latest doesn't ship it by
+        # default. Real failure hit live: "exec: ffmpeg: executable file
+        # not found in $PATH".
+        if: hashFiles('repo/internal/ffmpeg/*.go') != ''
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
       - name: Install uv (Python sidecar repos only)
         # jieun-analyzer's `make lint` also runs `cd python && uv run ruff
         # check .` (T-042's Python transcription sidecar) — repos without a
