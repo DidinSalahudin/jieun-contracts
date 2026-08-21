@@ -45,13 +45,19 @@ type Cut struct {
 }
 
 type Profile struct {
-	Audio      Audio     `json:"audio"`
-	Encode     Encode    `json:"encode"`
-	Fit        Fit       `json:"fit"`
-	Ratio      Ratio     `json:"ratio"`
-	Resolution []int64   `json:"resolution"`
-	Subtitle   Subtitle  `json:"subtitle"`
-	Watermark  Watermark `json:"watermark"`
+	Attribution *Attribution `json:"attribution,omitempty"`
+	Audio       Audio        `json:"audio"`
+	Encode      Encode       `json:"encode"`
+	Fit         Fit          `json:"fit"`
+	Ratio       Ratio        `json:"ratio"`
+	Resolution  []int64      `json:"resolution"`
+	Subtitle    Subtitle     `json:"subtitle"`
+	Watermark   Watermark    `json:"watermark"`
+}
+
+type Attribution struct {
+	Enabled bool    `json:"enabled"`
+	Text    *string `json:"text,omitempty"`
 }
 
 type Audio struct {

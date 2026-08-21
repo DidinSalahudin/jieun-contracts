@@ -63,6 +63,14 @@
                 "size_ratio": { "type": "number" }
               }
             },
+            "attribution": {
+              "type": "object",
+              "required": ["enabled"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "text": { "type": "string" }
+              }
+            },
             "audio": {
               "type": "object",
               "properties": {

@@ -40,13 +40,20 @@ export interface Cut {
 }
 
 export interface Profile {
-    audio:      Audio;
-    encode:     Encode;
-    fit:        Fit;
-    ratio:      Ratio;
-    resolution: [number, number, ...number[]];
-    subtitle:   Subtitle;
-    watermark:  Watermark;
+    attribution?: Attribution;
+    audio:        Audio;
+    encode:       Encode;
+    fit:          Fit;
+    ratio:        Ratio;
+    resolution:   [number, number, ...number[]];
+    subtitle:     Subtitle;
+    watermark:    Watermark;
+    [property: string]: unknown;
+}
+
+export interface Attribution {
+    enabled: boolean;
+    text?:   string;
     [property: string]: unknown;
 }
 
@@ -285,6 +292,7 @@ const typeMap: any = {
         { json: "start_ms", js: "start_ms", typ: 0 },
     ], "any"),
     "Profile": o([
+        { json: "attribution", js: "attribution", typ: u(undefined, r("Attribution")) },
         { json: "audio", js: "audio", typ: r("Audio") },
         { json: "encode", js: "encode", typ: r("Encode") },
         { json: "fit", js: "fit", typ: r("Fit") },
@@ -292,6 +300,10 @@ const typeMap: any = {
         { json: "resolution", js: "resolution", typ: a(0) },
         { json: "subtitle", js: "subtitle", typ: r("Subtitle") },
         { json: "watermark", js: "watermark", typ: r("Watermark") },
+    ], "any"),
+    "Attribution": o([
+        { json: "enabled", js: "enabled", typ: true },
+        { json: "text", js: "text", typ: u(undefined, "") },
     ], "any"),
     "Audio": o([
         { json: "loudnorm_lufs", js: "loudnorm_lufs", typ: u(undefined, 3.14) },
