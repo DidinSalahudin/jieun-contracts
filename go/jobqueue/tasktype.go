@@ -5,11 +5,12 @@ package jobqueue
 type TaskType string
 
 const (
-	TaskAnalyzeStart    TaskType = "analyze:start"
-	TaskAnalyzeStage    TaskType = "analyze:stage"
-	TaskRenderClip      TaskType = "render:clip"
-	TaskPublishVideo    TaskType = "publish:video"
-	TaskAnalyticsExport TaskType = "analytics:export"
+	TaskAnalyzeStart       TaskType = "analyze:start"
+	TaskAnalyzeStage       TaskType = "analyze:stage"
+	TaskRenderClip         TaskType = "render:clip"
+	TaskPublishVideo       TaskType = "publish:video"
+	TaskAnalyticsExport    TaskType = "analytics:export"
+	TaskStoryboardGenerate TaskType = "storyboard:generate"
 )
 
 // Queue names — INTEGRATION.md §6.2.
@@ -36,9 +37,10 @@ var QueuePriorities = map[string]int{
 // get registered by whichever future task builds them (see this plan's
 // Global Constraints for the full catalog and why).
 var QueueForTask = map[TaskType]string{
-	TaskAnalyzeStart:    QueueAnalyze,
-	TaskAnalyzeStage:    QueueAnalyze,
-	TaskRenderClip:      QueueRender,
-	TaskPublishVideo:    QueuePublish,
-	TaskAnalyticsExport: QueueDefault,
+	TaskAnalyzeStart:       QueueAnalyze,
+	TaskAnalyzeStage:       QueueAnalyze,
+	TaskRenderClip:         QueueRender,
+	TaskPublishVideo:       QueuePublish,
+	TaskAnalyticsExport:    QueueDefault,
+	TaskStoryboardGenerate: QueueAnalyze,
 }

@@ -4,11 +4,12 @@ import "testing"
 
 func TestQueueForTask_HasAllThreeRegisteredTypes(t *testing.T) {
 	want := map[TaskType]string{
-		TaskAnalyzeStart:    QueueAnalyze,
-		TaskAnalyzeStage:    QueueAnalyze,
-		TaskRenderClip:      QueueRender,
-		TaskPublishVideo:    QueuePublish,
-		TaskAnalyticsExport: QueueDefault,
+		TaskAnalyzeStart:       QueueAnalyze,
+		TaskAnalyzeStage:       QueueAnalyze,
+		TaskRenderClip:         QueueRender,
+		TaskPublishVideo:       QueuePublish,
+		TaskAnalyticsExport:    QueueDefault,
+		TaskStoryboardGenerate: QueueAnalyze,
 	}
 	if len(QueueForTask) != len(want) {
 		t.Fatalf("QueueForTask has %d entries, want %d", len(QueueForTask), len(want))
@@ -58,5 +59,8 @@ func TestTaskTypeConstants_MatchCatalogNames(t *testing.T) {
 	}
 	if TaskAnalyticsExport != "analytics:export" {
 		t.Errorf("TaskAnalyticsExport = %q, want \"analytics:export\"", TaskAnalyticsExport)
+	}
+	if TaskStoryboardGenerate != "storyboard:generate" {
+		t.Errorf("TaskStoryboardGenerate = %q, want \"storyboard:generate\"", TaskStoryboardGenerate)
 	}
 }
