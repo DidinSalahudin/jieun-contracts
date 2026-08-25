@@ -31,6 +31,7 @@ type Payload struct {
 	StoryboardID  string       `json:"storyboard_id"`
 	TargetVideoID string       `json:"target_video_id"`
 	OutputKey     string       `json:"output_key"`
+	ThumbnailKey  string       `json:"thumbnail_key"`
 	Scenes        []Scene      `json:"scenes"`
 	Profile       Profile      `json:"profile"`
 	EnginePolicy  EnginePolicy `json:"engine_policy"`
