@@ -49,17 +49,28 @@ func (c *EventConsumer) EnsureGroup(ctx context.Context, stream, group string) e
 	return nil
 }
 
+// readGroupBlock bounds how long ReadGroup waits for new entries on an
+// empty stream — go-redis's zero value for XReadGroupArgs.Block sends
+// Redis's own "BLOCK 0" (block forever), not "don't block" as the Go zero
+// value might suggest. A caller alternating between multiple streams (e.g.
+// jieun.render.completed and jieun.render.failed) would hang forever the
+// moment it reached whichever one had zero entries, never returning to
+// poll the others again — a real bug found live, T-124b.
+const readGroupBlock = 100 * time.Millisecond
+
 // ReadGroup reads up to count new entries for this consumer, decodes each
 // as an EventEnvelope, and applies event_id-level idempotency: an entry
 // whose event_id was already processed is acked immediately and excluded
 // from the returned slice — TASKS.md T-040's "Konsumen event idempoten
-// terhadap event_id".
+// terhadap event_id". Returns promptly (within readGroupBlock) even when
+// the stream has nothing new.
 func (c *EventConsumer) ReadGroup(ctx context.Context, stream, group, consumerName string, count int64) ([]EventMessage, error) {
 	streams, err := c.rdb.XReadGroup(ctx, &redis.XReadGroupArgs{
 		Group:    group,
 		Consumer: consumerName,
 		Streams:  []string{stream, ">"},
 		Count:    count,
+		Block:    readGroupBlock,
 	}).Result()
 	if err != nil {
 		if err == redis.Nil {

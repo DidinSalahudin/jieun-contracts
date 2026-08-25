@@ -112,3 +112,50 @@ func TestEventConsumer_ReadGroup_SkipsAlreadyProcessedEventID(t *testing.T) {
 	rdb.Del(ctx, streamName)
 	rdb.Del(ctx, "processed:"+env.EventID)
 }
+
+// TestEventConsumer_ReadGroup_ReturnsPromptlyOnEmptyStream is a real bug
+// found live (T-124b, jieun-platform): every other test here always
+// publishes before calling ReadGroup, so this empty-stream path was never
+// exercised. XReadGroupArgs never set Block, and go-redis's zero value
+// sends "BLOCK 0" — Redis's own protocol for "block forever" — so a
+// consumer alternating between two streams (e.g. jieun.render.completed
+// and jieun.render.failed) hangs forever the moment it reaches whichever
+// stream happens to have zero entries, never returning to poll the other
+// one again. ReadGroup must return promptly either way.
+func TestEventConsumer_ReadGroup_ReturnsPromptlyOnEmptyStream(t *testing.T) {
+	suffix := newTestSuffix()
+	streamName := "test-stream-" + t.Name() + "-" + suffix
+	groupName := "test-group-" + t.Name() + "-" + suffix
+
+	cons := NewEventConsumer(testRedisAddr)
+	defer cons.Close()
+	ctx := context.Background()
+
+	if err := cons.EnsureGroup(ctx, streamName, groupName); err != nil {
+		t.Fatalf("EnsureGroup: %v", err)
+	}
+
+	done := make(chan struct{})
+	var msgs []EventMessage
+	var readErr error
+	go func() {
+		msgs, readErr = cons.ReadGroup(ctx, streamName, groupName, "consumer-1", 10)
+		close(done)
+	}()
+
+	select {
+	case <-done:
+	case <-time.After(3 * time.Second):
+		t.Fatal("ReadGroup did not return within 3s on an empty stream — it must not block indefinitely")
+	}
+	if readErr != nil {
+		t.Fatalf("ReadGroup: %v", readErr)
+	}
+	if len(msgs) != 0 {
+		t.Errorf("len(msgs) = %d, want 0", len(msgs))
+	}
+
+	rdb := redis.NewClient(&redis.Options{Addr: testRedisAddr})
+	defer rdb.Close()
+	rdb.Del(ctx, streamName)
+}
