@@ -10,6 +10,7 @@ func TestQueueForTask_HasAllThreeRegisteredTypes(t *testing.T) {
 		TaskPublishVideo:       QueuePublish,
 		TaskAnalyticsExport:    QueueDefault,
 		TaskStoryboardGenerate: QueueAnalyze,
+		TaskStoryboardRender:   QueueRender,
 	}
 	if len(QueueForTask) != len(want) {
 		t.Fatalf("QueueForTask has %d entries, want %d", len(QueueForTask), len(want))
@@ -62,5 +63,8 @@ func TestTaskTypeConstants_MatchCatalogNames(t *testing.T) {
 	}
 	if TaskStoryboardGenerate != "storyboard:generate" {
 		t.Errorf("TaskStoryboardGenerate = %q, want \"storyboard:generate\"", TaskStoryboardGenerate)
+	}
+	if TaskStoryboardRender != "storyboard:render" {
+		t.Errorf("TaskStoryboardRender = %q, want \"storyboard:render\"", TaskStoryboardRender)
 	}
 }
