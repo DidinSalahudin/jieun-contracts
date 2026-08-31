@@ -10,8 +10,10 @@ const (
 	TaskRenderClip         TaskType = "render:clip"
 	TaskPublishVideo       TaskType = "publish:video"
 	TaskAnalyticsExport    TaskType = "analytics:export"
+	TaskDataExport         TaskType = "data:export"
 	TaskStoryboardGenerate TaskType = "storyboard:generate"
 	TaskStoryboardRender   TaskType = "storyboard:render"
+	TaskAdminLogExport     TaskType = "admin:log-export"
 )
 
 // Queue names — INTEGRATION.md §6.2.
@@ -43,6 +45,8 @@ var QueueForTask = map[TaskType]string{
 	TaskRenderClip:         QueueRender,
 	TaskPublishVideo:       QueuePublish,
 	TaskAnalyticsExport:    QueueDefault,
+	TaskDataExport:         QueueDefault,
 	TaskStoryboardGenerate: QueueAnalyze,
 	TaskStoryboardRender:   QueueRender,
+	TaskAdminLogExport:     QueueDefault,
 }

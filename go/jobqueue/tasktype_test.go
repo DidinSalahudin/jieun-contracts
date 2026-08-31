@@ -9,8 +9,10 @@ func TestQueueForTask_HasAllThreeRegisteredTypes(t *testing.T) {
 		TaskRenderClip:         QueueRender,
 		TaskPublishVideo:       QueuePublish,
 		TaskAnalyticsExport:    QueueDefault,
+		TaskDataExport:         QueueDefault,
 		TaskStoryboardGenerate: QueueAnalyze,
 		TaskStoryboardRender:   QueueRender,
+		TaskAdminLogExport:     QueueDefault,
 	}
 	if len(QueueForTask) != len(want) {
 		t.Fatalf("QueueForTask has %d entries, want %d", len(QueueForTask), len(want))
@@ -61,10 +63,16 @@ func TestTaskTypeConstants_MatchCatalogNames(t *testing.T) {
 	if TaskAnalyticsExport != "analytics:export" {
 		t.Errorf("TaskAnalyticsExport = %q, want \"analytics:export\"", TaskAnalyticsExport)
 	}
+	if TaskDataExport != "data:export" {
+		t.Errorf("TaskDataExport = %q, want \"data:export\"", TaskDataExport)
+	}
 	if TaskStoryboardGenerate != "storyboard:generate" {
 		t.Errorf("TaskStoryboardGenerate = %q, want \"storyboard:generate\"", TaskStoryboardGenerate)
 	}
 	if TaskStoryboardRender != "storyboard:render" {
 		t.Errorf("TaskStoryboardRender = %q, want \"storyboard:render\"", TaskStoryboardRender)
+	}
+	if TaskAdminLogExport != "admin:log-export" {
+		t.Errorf("TaskAdminLogExport = %q, want \"admin:log-export\"", TaskAdminLogExport)
 	}
 }
