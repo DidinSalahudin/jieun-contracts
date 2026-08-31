@@ -1,0 +1,60 @@
+name: Reusable CI (Bun)
+
+on:
+  workflow_call: {}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          path: repo
+
+      - name: Checkout jieun-contracts
+        uses: actions/checkout@v4
+        with:
+          repository: DidinSalahudin/jieun-contracts
+          path: jieun-contracts
+
+      - name: Load centralized tool versions
+        run: grep -v '^#' jieun-contracts/versions.env | grep -v '^$' >> "$GITHUB_ENV"
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        working-directory: repo
+        run: bun install
+
+      - name: make lint
+        working-directory: repo
+        run: make lint
+
+      - name: make test
+        working-directory: repo
+        # bun's coverage table prints to stderr, not stdout — 2>&1 merges
+        # them before tee so the Coverage regression gate step below can
+        # actually find the "All files" summary line.
+        run: make test 2>&1 | tee coverage-report.txt
+
+      - name: Coverage regression gate
+        working-directory: repo
+        run: |
+          if [ ! -f coverage-baseline.txt ]; then
+            echo "::warning::coverage-baseline.txt not found — skipping regression gate (run 'bun run coverage-baseline' to add one)"
+            exit 0
+          fi
+          TOTAL=$(grep '^All files' coverage-report.txt | awk -F'|' '{gsub(/ /,"",$3); print $3}')
+          BASELINE=$(cat coverage-baseline.txt)
+          echo "Current coverage (lines): ${TOTAL}% (baseline: ${BASELINE}%)"
+          awk -v total="$TOTAL" -v base="$BASELINE" 'BEGIN { exit (total+0 < base+0) ? 1 : 0 }' || {
+            echo "::error::Coverage regressed: ${TOTAL}% < baseline ${BASELINE}%. If intentional, run 'bun run coverage-baseline' and include the updated coverage-baseline.txt in this PR."
+            exit 1
+          }
+
+      - name: make build
+        working-directory: repo
+        run: make build

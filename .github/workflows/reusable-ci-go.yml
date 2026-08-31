@@ -63,9 +63,24 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      minio:
+        image: minio/minio:latest
+        # minio/minio:latest bundles the `mc` CLI, so the healthcheck can
+        # exec it directly — no extra image needed (same command used by
+        # jieun-deploy/docker-compose.yml's own minio healthcheck).
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd "mc ready local"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
       DATABASE_URL: postgres://jieun:jieun@localhost:5432/jieun_test?sslmode=disable
       REDIS_ADDR: localhost:16379
+      MINIO_ENDPOINT: localhost:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -172,9 +187,36 @@ jobs:
             make migrate-up
           fi
 
+      - name: Create MinIO test buckets
+        # jieun-deploy/docker-compose.yml's minio-init service creates
+        # this same bucket list locally via `mc mb`; CI needs the same
+        # buckets pre-created since the app code never creates its own
+        # buckets at runtime (T-030 decision — buckets are provisioned
+        # infra, not app-managed).
+        run: |
+          curl -sSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
+          chmod +x /usr/local/bin/mc
+          mc alias set local http://localhost:9000 "$MINIO_ACCESS_KEY" "$MINIO_SECRET_KEY"
+          mc mb --ignore-existing local/jieun-media local/jieun-temp local/jieun-thumbs local/jieun-exports local/jieun-voice-previews
+
       - name: make test
         working-directory: repo
         run: make test
+
+      - name: Coverage regression gate
+        working-directory: repo
+        run: |
+          if [ ! -f coverage-baseline.txt ]; then
+            echo "::warning::coverage-baseline.txt not found — skipping regression gate (run 'make coverage-baseline' to add one)"
+            exit 0
+          fi
+          TOTAL=$(go tool cover -func=coverage.out | tail -1 | awk '{print $3}' | tr -d '%')
+          BASELINE=$(cat coverage-baseline.txt)
+          echo "Current coverage: ${TOTAL}% (baseline: ${BASELINE}%)"
+          awk -v total="$TOTAL" -v base="$BASELINE" 'BEGIN { exit (total+0 < base+0) ? 1 : 0 }' || {
+            echo "::error::Coverage regressed: ${TOTAL}% < baseline ${BASELINE}%. If intentional, run 'make coverage-baseline' and include the updated coverage-baseline.txt in this PR."
+            exit 1
+          }
 
       - name: make build
         working-directory: repo
