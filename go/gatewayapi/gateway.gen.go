@@ -103,6 +103,34 @@ type Page struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
+// Plan defines model for Plan.
+type Plan struct {
+	AllowedEngines []string `json:"allowed_engines"`
+	Benefits       []string `json:"benefits"`
+	Features       struct {
+		ApiAccess        bool `json:"api_access"`
+		Byok             bool `json:"byok"`
+		LogRetentionDays int  `json:"log_retention_days"`
+		PriorityQueue    bool `json:"priority_queue"`
+		WatermarkForced  bool `json:"watermark_forced"`
+	} `json:"features"`
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	PriceIdr struct {
+		Month int `json:"month"`
+		Year  int `json:"year"`
+	} `json:"price_idr"`
+	Quotas struct {
+		MaxSourceDurationMin int `json:"max_source_duration_min"`
+		MaxUploadMb          int `json:"max_upload_mb"`
+		SocialAccounts       int `json:"social_accounts"`
+		StorageMb            int `json:"storage_mb"`
+		VideosPerMonth       int `json:"videos_per_month"`
+	} `json:"quotas"`
+	TrialDays int  `json:"trial_days"`
+	Visible   bool `json:"visible"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse = Error
 
@@ -193,6 +221,11 @@ type ClientInterface interface {
 	// Corresponds with GET /healthz (the `GetHealthz` operationId).
 	GetHealthz(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListPublicPlans Daftar paket yang tampil ke publik (landing page, harga)
+	//
+	// Corresponds with GET /plans/public (the `ListPublicPlans` operationId).
+	ListPublicPlans(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetReadyz Readiness probe (DB, Redis, MinIO)
 	//
 	// Corresponds with GET /readyz (the `GetReadyz` operationId).
@@ -219,6 +252,21 @@ func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (
 // Corresponds with GET /healthz (the `GetHealthz` operationId).
 func (c *Client) GetHealthz(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetHealthzRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ListPublicPlans Daftar paket yang tampil ke publik (landing page, harga)
+//
+// Corresponds with GET /plans/public (the `ListPublicPlans` operationId).
+func (c *Client) ListPublicPlans(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPublicPlansRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -281,6 +329,33 @@ func NewGetHealthzRequest(server string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/healthz")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListPublicPlansRequest constructs an http.Request for the ListPublicPlans method
+func NewListPublicPlansRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/plans/public")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -383,6 +458,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /healthz (the `GetHealthz` operationId).
 	GetHealthzWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthzResponse, error)
 
+	// ListPublicPlansWithResponse Daftar paket yang tampil ke publik (landing page, harga)
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /plans/public (the `ListPublicPlans` operationId).
+	ListPublicPlansWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPublicPlansResponse, error)
+
 	// GetReadyzWithResponse Readiness probe (DB, Redis, MinIO)
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -472,6 +554,51 @@ func (r GetHealthzResponse) ContentType() string {
 	return ""
 }
 
+type ListPublicPlansResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *struct {
+		Data []Plan `json:"data"`
+	}
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListPublicPlansResponse) GetJSON200() *struct {
+	Data []Plan `json:"data"`
+} {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r ListPublicPlansResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPublicPlansResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPublicPlansResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListPublicPlansResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetReadyzResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -532,6 +659,19 @@ func (c *ClientWithResponses) GetHealthzWithResponse(ctx context.Context, reqEdi
 	return ParseGetHealthzResponse(rsp)
 }
 
+// ListPublicPlansWithResponse Daftar paket yang tampil ke publik (landing page, harga)
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /plans/public (the `ListPublicPlans` operationId).
+func (c *ClientWithResponses) ListPublicPlansWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPublicPlansResponse, error) {
+	rsp, err := c.ListPublicPlans(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPublicPlansResponse(rsp)
+}
+
 // GetReadyzWithResponse Readiness probe (DB, Redis, MinIO)
 //
 // Returns a wrapper object for the known response body format(s).
@@ -585,6 +725,34 @@ func ParseGetHealthzResponse(rsp *http.Response) (*GetHealthzResponse, error) {
 	response := &GetHealthzResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseListPublicPlansResponse parses an HTTP response from a ListPublicPlansWithResponse call
+func ParseListPublicPlansResponse(rsp *http.Response) (*ListPublicPlansResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPublicPlansResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []Plan `json:"data"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
 	}
 
 	return response, nil

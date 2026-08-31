@@ -55,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/plans/public": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Daftar paket yang tampil ke publik (landing page, harga) */
+        get: operations["listPublicPlans"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -68,6 +85,32 @@ export interface components {
                 retryable: boolean;
                 trace_id: string;
             };
+        };
+        Plan: {
+            id: string;
+            name: string;
+            trial_days: number;
+            visible: boolean;
+            price_idr: {
+                month: number;
+                year: number;
+            };
+            quotas: {
+                videos_per_month: number;
+                storage_mb: number;
+                social_accounts: number;
+                max_upload_mb: number;
+                max_source_duration_min: number;
+            };
+            features: {
+                api_access: boolean;
+                priority_queue: boolean;
+                watermark_forced: boolean;
+                byok: boolean;
+                log_retention_days: number;
+            };
+            allowed_engines: string[];
+            benefits: string[];
         };
         Page: {
             next_cursor?: string;
@@ -157,6 +200,28 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    listPublicPlans: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Plan"][];
+                    };
+                };
             };
         };
     };

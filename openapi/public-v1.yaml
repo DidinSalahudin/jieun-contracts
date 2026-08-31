@@ -51,6 +51,24 @@ paths:
           description: Siap menerima lalu lintas
         "503":
           description: Salah satu dependensi tidak sehat
+  /plans/public:
+    get:
+      operationId: listPublicPlans
+      summary: Daftar paket yang tampil ke publik (landing page, harga)
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Plan"
 components:
   securitySchemes:
     bearerAuth:
@@ -87,6 +105,44 @@ components:
             details: { type: object }
             retryable: { type: boolean }
             trace_id: { type: string }
+    Plan:
+      type: object
+      required: [id, name, trial_days, visible, price_idr, quotas, features, allowed_engines, benefits]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        trial_days: { type: integer }
+        visible: { type: boolean }
+        price_idr:
+          type: object
+          required: [month, year]
+          properties:
+            month: { type: integer }
+            year: { type: integer }
+        quotas:
+          type: object
+          required: [videos_per_month, storage_mb, social_accounts, max_upload_mb, max_source_duration_min]
+          properties:
+            videos_per_month: { type: integer }
+            storage_mb: { type: integer }
+            social_accounts: { type: integer }
+            max_upload_mb: { type: integer }
+            max_source_duration_min: { type: integer }
+        features:
+          type: object
+          required: [api_access, priority_queue, watermark_forced, byok, log_retention_days]
+          properties:
+            api_access: { type: boolean }
+            priority_queue: { type: boolean }
+            watermark_forced: { type: boolean }
+            byok: { type: boolean }
+            log_retention_days: { type: integer }
+        allowed_engines:
+          type: array
+          items: { type: string }
+        benefits:
+          type: array
+          items: { type: string }
     Page:
       type: object
       required: [has_more, limit]
