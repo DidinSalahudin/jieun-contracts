@@ -109,7 +109,7 @@ export interface components {
                 byok: boolean;
                 log_retention_days: number;
             };
-            allowed_engines: string[];
+            allowed_engines: string[] | null;
             benefits: string[];
         };
         Page: {
