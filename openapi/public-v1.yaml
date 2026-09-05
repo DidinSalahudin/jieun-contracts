@@ -69,6 +69,89 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Plan"
+  /dashboard:
+    get:
+      operationId: getDashboard
+      summary: Satu panggilan gabungan untuk seluruh layar beranda
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Dashboard"
+  /videos:
+    get:
+      operationId: listVideos
+      summary: Daftar video di galeri (filter status/method/pencarian, kursor)
+      parameters:
+        - { name: status, in: query, schema: { type: string } }
+        - { name: method, in: query, schema: { type: string } }
+        - { name: q, in: query, schema: { type: string } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, page]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/VideoSummary"
+                  page:
+                    $ref: "#/components/schemas/Page"
+  /videos/bulk-delete:
+    post:
+      operationId: bulkDeleteVideos
+      summary: Hapus banyak video sekaligus, satu transaksi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ids]
+              properties:
+                ids:
+                  type: array
+                  items: { type: string }
+      responses:
+        "204":
+          description: Terhapus
+  /videos/{id}:
+    get:
+      operationId: getVideo
+      summary: Detail video — metadata, distribusi, riwayat
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/VideoDetail"
+    delete:
+      operationId: deleteVideo
+      summary: Hapus video (soft delete); ditolak bila ada distribusi terjadwal
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "204":
+          description: Terhapus
 components:
   securitySchemes:
     bearerAuth:
@@ -155,6 +238,166 @@ components:
         next_cursor: { type: string }
         has_more: { type: boolean }
         limit: { type: integer }
+    Dashboard:
+      type: object
+      required: [greeting, stats, pipeline, running_jobs, upcoming, quota, performance_7d, attention]
+      properties:
+        greeting:
+          type: object
+          required: [name, part_of_day]
+          properties:
+            name: { type: string }
+            part_of_day: { type: string }
+        stats:
+          type: object
+          required: [published_this_month, drafts, scheduled, accounts_issues]
+          properties:
+            published_this_month: { type: integer }
+            drafts: { type: integer }
+            scheduled: { type: integer }
+            accounts_issues: { type: integer }
+        pipeline:
+          type: array
+          items:
+            type: object
+            required: [stage, count]
+            properties:
+              stage: { type: string }
+              count: { type: integer }
+        running_jobs:
+          type: array
+          items:
+            type: object
+            required: [job_id, title, percent, step]
+            properties:
+              job_id: { type: string }
+              title: { type: string }
+              percent: { type: integer }
+              step: { type: string }
+        upcoming:
+          type: array
+          items:
+            type: object
+            required: [distribution_id, publish_at, local_time, title, account, platform]
+            properties:
+              distribution_id: { type: string }
+              publish_at: { type: string, format: date-time }
+              local_time: { type: string }
+              title: { type: string }
+              account: { type: string }
+              platform: { type: string }
+        quota:
+          type: object
+          required: [videos, storage_mb]
+          properties:
+            videos:
+              type: object
+              required: [used, limit]
+              properties:
+                used: { type: integer }
+                limit: { type: integer }
+            storage_mb:
+              type: object
+              required: [used, limit]
+              properties:
+                used: { type: integer }
+                limit: { type: integer }
+        performance_7d:
+          type: object
+          required: [views, change_pct, sparkline]
+          properties:
+            views: { type: integer }
+            change_pct: { type: number }
+            sparkline:
+              type: array
+              items: { type: integer }
+        attention:
+          type: array
+          items:
+            type: object
+            required: [type, severity, message, link]
+            properties:
+              type: { type: string }
+              severity: { type: string }
+              message: { type: string }
+              link:
+                # AttentionItem.Link is *string in jieun-platform, sourced
+                # straight from notifications.link which is a nullable DB
+                # column — a real null, not an encoding artifact.
+                type: string
+                nullable: true
+    VideoSource:
+      type: object
+      required: [type, label]
+      properties:
+        type: { type: string }
+        label: { type: string }
+    VideoSummary:
+      type: object
+      required: [id, title, status, method, duration_ms, ratio, size_mb, thumbnail_url, source, platforms, created_at]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        status: { type: string }
+        method: { type: string }
+        # Video.DurationMs/Ratio/SizeBytes are *int64/*string/*int64 in
+        # jieun-platform — null until jieun.render.completed sets them,
+        # not an encoding artifact.
+        duration_ms: { type: integer, nullable: true }
+        ratio: { type: string, nullable: true }
+        size_mb: { type: integer, nullable: true }
+        thumbnail_url: { type: string }
+        source:
+          $ref: "#/components/schemas/VideoSource"
+        platforms:
+          type: array
+          items: { type: string }
+        created_at: { type: string, format: date-time }
+    VideoDistribution:
+      type: object
+      required: [platform, account_name, status, scheduled_at, published_at, external_url]
+      properties:
+        platform: { type: string }
+        account_name: { type: string }
+        status: { type: string }
+        scheduled_at: { type: string, format: date-time, nullable: true }
+        published_at: { type: string, format: date-time, nullable: true }
+        external_url: { type: string, nullable: true }
+    VideoHistoryEntry:
+      type: object
+      required: [at, event, detail]
+      properties:
+        at: { type: string, format: date-time }
+        event: { type: string }
+        detail: { type: string }
+    VideoDetail:
+      type: object
+      required: [id, title, status, method, duration_ms, ratio, size_mb, thumbnail_url, source, render_profile, distributions, history, created_at]
+      properties:
+        id: { type: string }
+        title: { type: string }
+        status: { type: string }
+        method: { type: string }
+        duration_ms: { type: integer, nullable: true }
+        ratio: { type: string, nullable: true }
+        size_mb: { type: integer, nullable: true }
+        thumbnail_url: { type: string }
+        source:
+          $ref: "#/components/schemas/VideoSource"
+        render_profile:
+          # json.RawMessage stays nil (→ null) until a render actually
+          # writes RenderProfile — same reasoning as duration_ms/ratio.
+          type: object
+          nullable: true
+        distributions:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoDistribution"
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoHistoryEntry"
+        created_at: { type: string, format: date-time }
   responses:
     ErrorResponse:
       description: Error seragam — lihat komponen Error

@@ -27,6 +27,8 @@ jobs:
 
       - name: Install dependencies
         working-directory: repo
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
         run: bun install
 
       - name: make lint
@@ -58,3 +60,17 @@ jobs:
       - name: make build
         working-directory: repo
         run: make build
+
+      - name: a11y contrast audit (pa11y-ci + axe, WCAG2AA)
+        working-directory: repo
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+        run: |
+          if [ ! -f pa11y.json ]; then
+            echo "::notice::pa11y.json not found — skipping a11y audit"
+            exit 0
+          fi
+          bunx serve --listen 3000 --single dist &
+          until curl -sf http://localhost:3000 > /dev/null; do sleep 1; done
+          bunx pa11y-ci --config pa11y.json
+          kill %1 2>/dev/null || true

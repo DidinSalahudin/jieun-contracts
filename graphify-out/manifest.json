@@ -1,0 +1,332 @@
+{
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/codegen/generate.sh": {
+    "mtime": 1786540991.5964165,
+    "seen": 1787442884.2549179,
+    "ast_hash": "3e9c9b3655f01fef2152f6704bc8a1c3",
+    "semantic_hash": "3e9c9b3655f01fef2152f6704bc8a1c3"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/analysis-completed.v1.json": {
+    "mtime": 1786086830.4442816,
+    "seen": 1787442884.254921,
+    "ast_hash": "eba1b5685df39c5ca62e4c34740a13c8",
+    "semantic_hash": "eba1b5685df39c5ca62e4c34740a13c8"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/analysis-progress.v1.json": {
+    "mtime": 1786524043.4922385,
+    "seen": 1787442884.254923,
+    "ast_hash": "e8299bc2be2ed2f9884e08ec426eb56c",
+    "semantic_hash": "e8299bc2be2ed2f9884e08ec426eb56c"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/envelope.v1.json": {
+    "mtime": 1786086830.4448655,
+    "seen": 1787442884.254923,
+    "ast_hash": "e8de36aefffd97eeab54f87a1e9baa05",
+    "semantic_hash": "e8de36aefffd97eeab54f87a1e9baa05"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/render-completed.v1.json": {
+    "mtime": 1786879342.1776829,
+    "seen": 1787442884.254924,
+    "ast_hash": "03ca75a0eac14a87cae15a1b118727c2",
+    "semantic_hash": "03ca75a0eac14a87cae15a1b118727c2"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/render-failed.v1.json": {
+    "mtime": 1786540979.1725254,
+    "seen": 1787442884.254925,
+    "ast_hash": "cf692f843af7af3310d8c910516b9cba",
+    "semantic_hash": "cf692f843af7af3310d8c910516b9cba"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/events/render-progress.v1.json": {
+    "mtime": 1786540974.8698006,
+    "seen": 1787442884.254926,
+    "ast_hash": "c9e1cc8a645eae3ce2fa4fc7daaae00e",
+    "semantic_hash": "c9e1cc8a645eae3ce2fa4fc7daaae00e"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/githooks/pre-commit": {
+    "mtime": 1786077652.5258064,
+    "seen": 1787442884.2549272,
+    "ast_hash": "e0798a3a216e169cb174abf729287ca4",
+    "semantic_hash": "e0798a3a216e169cb174abf729287ca4"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go.mod": {
+    "mtime": 1786353168.190639,
+    "seen": 1787442884.2549279,
+    "ast_hash": "3bc586c6c26413450e011e307ae2d1c8",
+    "semantic_hash": "3bc586c6c26413450e011e307ae2d1c8"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/events/analysiscompleted/analysis_completed.gen.go": {
+    "mtime": 1787283730.791005,
+    "seen": 1787442884.2549279,
+    "ast_hash": "f415467baec9529ac1f9cec5da741490",
+    "semantic_hash": "f415467baec9529ac1f9cec5da741490"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/events/envelope/envelope.gen.go": {
+    "mtime": 1787283729.5942833,
+    "seen": 1787442884.2549288,
+    "ast_hash": "b97248ad30f824673726981b50295397",
+    "semantic_hash": "b97248ad30f824673726981b50295397"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/events/rendercompleted/render_completed.gen.go": {
+    "mtime": 1787283731.980082,
+    "seen": 1787442884.25493,
+    "ast_hash": "ec468efc4f59799bdbdb9a4da7d7c889",
+    "semantic_hash": "ec468efc4f59799bdbdb9a4da7d7c889"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/events/renderfailed/render_failed.gen.go": {
+    "mtime": 1787283734.4457395,
+    "seen": 1787442884.254931,
+    "ast_hash": "bab86c103482cb2446c4a9758d781f40",
+    "semantic_hash": "bab86c103482cb2446c4a9758d781f40"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/events/renderprogress/render_progress.gen.go": {
+    "mtime": 1787283733.2083473,
+    "seen": 1787442884.254932,
+    "ast_hash": "b846600d8bd3d0b75c4833b4ea0f03dc",
+    "semantic_hash": "b846600d8bd3d0b75c4833b4ea0f03dc"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/gatewayapi/gateway.gen.go": {
+    "mtime": 1787283735.715742,
+    "seen": 1787442884.254932,
+    "ast_hash": "b5692e0967e004f57cb5707ec840cdc2",
+    "semantic_hash": "b5692e0967e004f57cb5707ec840cdc2"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/client.go": {
+    "mtime": 1786353154.7949448,
+    "seen": 1787442884.2549329,
+    "ast_hash": "f3641342fd5019afa0995f10b5842c83",
+    "semantic_hash": "f3641342fd5019afa0995f10b5842c83"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/client_test.go": {
+    "mtime": 1786353154.7976923,
+    "seen": 1787442884.254934,
+    "ast_hash": "ce3407def1aa3dffd27256a4ac216803",
+    "semantic_hash": "ce3407def1aa3dffd27256a4ac216803"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/consumer.go": {
+    "mtime": 1786353154.8101625,
+    "seen": 1787442884.254935,
+    "ast_hash": "b57f7e7ce87b65cac011a90b0c13c2eb",
+    "semantic_hash": "b57f7e7ce87b65cac011a90b0c13c2eb"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/consumer_test.go": {
+    "mtime": 1786353154.812558,
+    "seen": 1787442884.254936,
+    "ast_hash": "9e3724049ad9a4e85812406028dae4c7",
+    "semantic_hash": "9e3724049ad9a4e85812406028dae4c7"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/events.go": {
+    "mtime": 1786353154.805432,
+    "seen": 1787442884.254936,
+    "ast_hash": "bc6c67470bcf2614c15930892ecfb324",
+    "semantic_hash": "bc6c67470bcf2614c15930892ecfb324"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/events_test.go": {
+    "mtime": 1786353154.8078072,
+    "seen": 1787442884.2549372,
+    "ast_hash": "5c6dfaf738ed8f1c926491e3f976950c",
+    "semantic_hash": "5c6dfaf738ed8f1c926491e3f976950c"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/server.go": {
+    "mtime": 1786353154.8001606,
+    "seen": 1787442884.2549381,
+    "ast_hash": "f895e634a8f0fafb7c8d8c5c1be054ed",
+    "semantic_hash": "f895e634a8f0fafb7c8d8c5c1be054ed"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/server_test.go": {
+    "mtime": 1786353154.8029764,
+    "seen": 1787442884.2549388,
+    "ast_hash": "d8725245f8eee990f75bc69ef8e091ef",
+    "semantic_hash": "d8725245f8eee990f75bc69ef8e091ef"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/tasktype.go": {
+    "mtime": 1786522546.0135045,
+    "seen": 1787442884.2549388,
+    "ast_hash": "8d3e4c6896d6c43718cc9f2877e8b9e0",
+    "semantic_hash": "8d3e4c6896d6c43718cc9f2877e8b9e0"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/tasktype_test.go": {
+    "mtime": 1786522529.9752114,
+    "seen": 1787442884.2549398,
+    "ast_hash": "2fb0ebc37fb19c9058ee305abb1b766c",
+    "semantic_hash": "2fb0ebc37fb19c9058ee305abb1b766c"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobqueue/testutil_test.go": {
+    "mtime": 1786353196.2395663,
+    "seen": 1787442884.254941,
+    "ast_hash": "3122b51a5189d719fd87c2b3b64123bc",
+    "semantic_hash": "3122b51a5189d719fd87c2b3b64123bc"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobs/analyzestage/analyzestage.go": {
+    "mtime": 1786523095.517251,
+    "seen": 1787442884.254942,
+    "ast_hash": "e692f5532a9ca752d8c92e8cb33fb105",
+    "semantic_hash": "e692f5532a9ca752d8c92e8cb33fb105"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobs/analyzestage/analyzestage_test.go": {
+    "mtime": 1786523078.4568524,
+    "seen": 1787442884.254943,
+    "ast_hash": "5dd95465e649b56b908feb4d45ab249f",
+    "semantic_hash": "5dd95465e649b56b908feb4d45ab249f"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobs/analyzestart/analyze_start.gen.go": {
+    "mtime": 1787283725.7465818,
+    "seen": 1787442884.254943,
+    "ast_hash": "1706108c013b9f732da3bc6c99722c62",
+    "semantic_hash": "1706108c013b9f732da3bc6c99722c62"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobs/publishvideo/publish_video.gen.go": {
+    "mtime": 1787283728.2948718,
+    "seen": 1787442884.254944,
+    "ast_hash": "e7518fa5bbaddc0e8d4781a753466fcd",
+    "semantic_hash": "e7518fa5bbaddc0e8d4781a753466fcd"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/go/jobs/renderclip/render_clip.gen.go": {
+    "mtime": 1787283727.0678267,
+    "seen": 1787442884.254945,
+    "ast_hash": "5789ad1a9c2f8d35ee6ccdb670e98eb4",
+    "semantic_hash": "5789ad1a9c2f8d35ee6ccdb670e98eb4"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/jobs/analyze-stage.v1.json": {
+    "mtime": 1786523064.7599332,
+    "seen": 1787442884.254946,
+    "ast_hash": "32a7a7fd108da0b37d6244eb35ff4284",
+    "semantic_hash": "32a7a7fd108da0b37d6244eb35ff4284"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/jobs/analyze-start.v1.json": {
+    "mtime": 1786086900.972043,
+    "seen": 1787442884.254946,
+    "ast_hash": "e5de269d3483de62d4ae9b49a657814a",
+    "semantic_hash": "e5de269d3483de62d4ae9b49a657814a"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/jobs/publish-video.v1.json": {
+    "mtime": 1786086913.6358256,
+    "seen": 1787442884.2549472,
+    "ast_hash": "c10f41d166ab446ce1774ba83d290aad",
+    "semantic_hash": "c10f41d166ab446ce1774ba83d290aad"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/jobs/render-clip.v1.json": {
+    "mtime": 1787283673.3853838,
+    "seen": 1787442884.2549481,
+    "ast_hash": "9701554f94754150d70426a16525159e",
+    "semantic_hash": "9701554f94754150d70426a16525159e"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/package.json": {
+    "mtime": 1786087716.4675527,
+    "seen": 1787442884.254949,
+    "ast_hash": "b6254186f2ce7b26061ff62838017505",
+    "semantic_hash": "b6254186f2ce7b26061ff62838017505"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/package.json": {
+    "mtime": 1786156564.3704937,
+    "seen": 1787442884.254951,
+    "ast_hash": "2865a9bcb716d77d1ac177e88bd7f12d",
+    "semantic_hash": "2865a9bcb716d77d1ac177e88bd7f12d"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/events/analysis-completed.gen.ts": {
+    "mtime": 1787283731.3790483,
+    "seen": 1787442884.254952,
+    "ast_hash": "0a47e010e183f0ca254d67047e782e28",
+    "semantic_hash": "0a47e010e183f0ca254d67047e782e28"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/events/envelope.gen.ts": {
+    "mtime": 1787283730.1912239,
+    "seen": 1787442884.254953,
+    "ast_hash": "2e8aafec557b56eb9dbe19a025f51c6b",
+    "semantic_hash": "2e8aafec557b56eb9dbe19a025f51c6b"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/events/render-completed.gen.ts": {
+    "mtime": 1787283732.6045887,
+    "seen": 1787442884.254954,
+    "ast_hash": "7be0ad4a3134911caaea265ecfdaebf2",
+    "semantic_hash": "7be0ad4a3134911caaea265ecfdaebf2"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/events/render-failed.gen.ts": {
+    "mtime": 1787283735.0746484,
+    "seen": 1787442884.254954,
+    "ast_hash": "c7b808bad3d4e67a0672632ff818f9ad",
+    "semantic_hash": "c7b808bad3d4e67a0672632ff818f9ad"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/events/render-progress.gen.ts": {
+    "mtime": 1787283733.7986627,
+    "seen": 1787442884.254955,
+    "ast_hash": "b3185a63d3fd9411c37b1d06cf4f9ec9",
+    "semantic_hash": "b3185a63d3fd9411c37b1d06cf4f9ec9"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/gateway.gen.ts": {
+    "mtime": 1787283736.5626655,
+    "seen": 1787442884.254956,
+    "ast_hash": "c3315786b61f6d4423d31140edbcbc46",
+    "semantic_hash": "c3315786b61f6d4423d31140edbcbc46"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/index.ts": {
+    "mtime": 1786087866.1000369,
+    "seen": 1787442884.254957,
+    "ast_hash": "8c9b062cfe32b2404fdfe7eafbd15d41",
+    "semantic_hash": "8c9b062cfe32b2404fdfe7eafbd15d41"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/jobs/analyze-start.gen.ts": {
+    "mtime": 1787283726.4371192,
+    "seen": 1787442884.2549582,
+    "ast_hash": "d54c0f5b23e3d05d40a1bb6304a1baf5",
+    "semantic_hash": "d54c0f5b23e3d05d40a1bb6304a1baf5"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/jobs/publish-video.gen.ts": {
+    "mtime": 1787283728.9035099,
+    "seen": 1787442884.2549582,
+    "ast_hash": "65943f851fc89e8379b46f23bc890b28",
+    "semantic_hash": "65943f851fc89e8379b46f23bc890b28"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/ts/src/jobs/render-clip.gen.ts": {
+    "mtime": 1787283727.6926427,
+    "seen": 1787442884.254959,
+    "ast_hash": "ef98d97517fc0a1ab336d3779be3a9d5",
+    "semantic_hash": "ef98d97517fc0a1ab336d3779be3a9d5"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/.github/workflows/reusable-ci-go.yml": {
+    "mtime": 1787226377.3200457,
+    "seen": 1787442884.25496,
+    "ast_hash": "d89c90da1ec3164e5b60e3e79655dd24",
+    "semantic_hash": "d89c90da1ec3164e5b60e3e79655dd24"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/.github/workflows/reusable-ci-node.yml": {
+    "mtime": 1787220710.511457,
+    "seen": 1787442884.254961,
+    "ast_hash": "5691893448502b4eb44bd55afc330865",
+    "semantic_hash": "5691893448502b4eb44bd55afc330865"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/README.md": {
+    "mtime": 1786077698.5988805,
+    "seen": 1787442884.254962,
+    "ast_hash": "bd6f6a20f9b0c567bcfcaa1122eb91b5",
+    "semantic_hash": "bd6f6a20f9b0c567bcfcaa1122eb91b5"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/codegen/oapi-codegen.gateway.yaml": {
+    "mtime": 1786088120.2814329,
+    "seen": 1787442884.254965,
+    "ast_hash": "47f31fe067d4c548ecd2342e64f24eef",
+    "semantic_hash": "47f31fe067d4c548ecd2342e64f24eef"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/errors/catalog.yaml": {
+    "mtime": 1786086722.0817544,
+    "seen": 1787442884.254966,
+    "ast_hash": "f69833200b6596465d987d50a32a741b",
+    "semantic_hash": "f69833200b6596465d987d50a32a741b"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/lint/golangci.yml": {
+    "mtime": 1786077061.9275692,
+    "seen": 1787442884.254966,
+    "ast_hash": "06f8741bc0a3eedac8ae09f1e1c33dd0",
+    "semantic_hash": "06f8741bc0a3eedac8ae09f1e1c33dd0"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/openapi/public-v1.yaml": {
+    "mtime": 1786284327.0855145,
+    "seen": 1787442884.254967,
+    "ast_hash": "d3e1a4590e540ce2f297a1d5f996d87f",
+    "semantic_hash": "d3e1a4590e540ce2f297a1d5f996d87f"
+  },
+  "/Users/salahudin/Development/web/www/content/jieun-contracts/redocly.yaml": {
+    "mtime": 1786087004.7324529,
+    "seen": 1787442884.2549682,
+    "ast_hash": "57d95959b82384483e6ba13b45ba5eff",
+    "semantic_hash": "57d95959b82384483e6ba13b45ba5eff"
+  }
+}
